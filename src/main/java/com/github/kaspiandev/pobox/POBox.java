@@ -2,7 +2,6 @@ package com.github.kaspiandev.pobox;
 
 import com.github.kaspiandev.pobox.config.Config;
 import com.github.kaspiandev.pobox.config.Messages;
-import com.github.kaspiandev.pobox.data.BoxTable;
 import com.github.kaspiandev.pobox.data.CommandMailTable;
 import com.github.kaspiandev.pobox.data.Database;
 import com.github.kaspiandev.pobox.exception.PluginLoadFailureException;
@@ -27,8 +26,7 @@ public final class POBox extends JavaPlugin {
         }
 
         database = new Database(this);
-        boxTable = new BoxTable(database);
-        commandMailTable = new CommandMailTable(database);
+        commandMailTable = new CommandMailTable(this);
     }
 
     @Override
@@ -46,10 +44,6 @@ public final class POBox extends JavaPlugin {
 
     public CommandMailTable getCommandMailTable() {
         return commandMailTable;
-    }
-
-    public BoxTable getBoxTable() {
-        return boxTable;
     }
 
     public Database getDatabase() {
