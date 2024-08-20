@@ -1,0 +1,7 @@
+command:
+  no-permissions: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&You don't have the required permission to run this command."
+  no-arguments: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&You need to provide arguments to use this command."
+  invalid-subcommand: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&Specified subcommand doesn't exist."
+  only-players: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&Only players can use this command."
+
+version: 1

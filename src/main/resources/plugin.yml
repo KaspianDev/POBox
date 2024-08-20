@@ -1,0 +1,7 @@
+name: POBox
+version: '${version}'
+main: com.github.kaspiandev.pobox.POBox
+api-version: '1.19'
+author: KaspianDev
+libraries:
+  - dev.dejvokep:boosted-yaml:1.3.5
