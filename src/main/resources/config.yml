@@ -1,1 +1,37 @@
+gui:
+  box:
+    title: "&6&lPOBox &8&o(${currentPage}/${pages})"
+    mask:
+      - "xxxxxxxxx"
+      - "xmmmmmmmx"
+      - "xmmmmmmmx"
+      - "xxxpxnxxx"
+    items:
+      x:
+        type: BLUE_STAINED_GLASS_PANE
+      m:
+        role: "mail"
+        type: CHEST
+        name: "&6&l${mailName}"
+        lore:
+          - "&7Left-click to claim!"
+        flags:
+          - HIDE_ATTRIBUTES
+          - HIDE_ENCHANTS
+        enchants:
+          - type: "unbreaking"
+            level: 1
+      p:
+        role: "previous-page"
+        type: ARROW
+        name: "&ePrevious Page"
+        lore:
+          - "&7Click to open previous page!"
+      n:
+        role: "next-page"
+        type: ARROW
+        name: "&ePrevious Page"
+        lore:
+          - "&7Click to open previous page!"
+
 version: 1

@@ -19,11 +19,19 @@ public final class POBox extends JavaPlugin {
             getPluginLoader().disablePlugin(this);
             throw new RuntimeException(ex);
         }
-
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
     }
+
+    public Config getConf() {
+        return config;
+    }
+
+    public Messages getMessages() {
+        return messages;
+    }
+
 }
