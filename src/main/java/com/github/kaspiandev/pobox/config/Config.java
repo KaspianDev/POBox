@@ -2,6 +2,8 @@ package com.github.kaspiandev.pobox.config;
 
 import com.github.kaspiandev.pobox.POBox;
 import com.github.kaspiandev.pobox.exception.PluginLoadFailureException;
+import com.github.kaspiandev.pobox.gui.GuiContext;
+import com.github.kaspiandev.pobox.gui.GuiLoader;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
 import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
@@ -16,6 +18,7 @@ public class Config {
 
     private final POBox plugin;
     private final YamlDocument document;
+    private final GuiContext boxGuiContext;
 
     public Config(POBox plugin) throws PluginLoadFailureException {
         this.plugin = plugin;
@@ -34,6 +37,12 @@ public class Config {
         } catch (IOException ex) {
             throw new PluginLoadFailureException("Config could not be loaded.", ex);
         }
+
+        this.boxGuiContext = GuiLoader.load(document.getSection("gui.box"));
+    }
+
+    public GuiContext getBoxGuiContext() {
+        return boxGuiContext;
     }
 
 }
