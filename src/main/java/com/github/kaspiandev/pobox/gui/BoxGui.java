@@ -1,69 +1,60 @@
 package com.github.kaspiandev.pobox.gui;
 
 import com.github.kaspiandev.pobox.POBox;
-import dev.triumphteam.gui.guis.BaseGui;
-import dev.triumphteam.gui.guis.Gui;
-import dev.triumphteam.gui.guis.GuiItem;
+import de.themoep.inventorygui.GuiElementGroup;
+import de.themoep.inventorygui.GuiPageElement;
+import de.themoep.inventorygui.InventoryGui;
+import de.themoep.inventorygui.StaticGuiElement;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.bukkit.inventory.ItemStack;
 
 public class BoxGui {
 
     private final Player player;
     private final POBox plugin;
-    private final Map<Integer, List<GuiItem>> itemsPerPage;
-    private int page = 0;
 
     public BoxGui(Player player, POBox plugin) {
         this.player = player;
         this.plugin = plugin;
-        this.itemsPerPage = new HashMap<>();
-        loadPages();
     }
 
-    // TODO
-    private void loadPages() {
-        plugin.getCommandMailTable().getCommands(player).thenAccept((commands) -> {
-            GuiContext guiContext = plugin.getConf().getBoxGuiContext();
-            long mailPerPage = guiContext.items().stream()
-                                         .filter((item) -> item.role().equals("mail"))
-                                         .count();
-
-            int currentPage = 0;
-            int totalPages = (int) Math.max(1, commands.size() / mailPerPage);
-            List<GuiItem> currentPageItems = new ArrayList<>();
-            for (int i = 0; i < commands.size(); i++) {
-                for (ItemContext item : guiContext.items()) {
-                    if (item.role().equals("mail")) {
-                        GuiItem mailItem = new GuiItem(item.item(), (action) -> {
-                            //System.out.println("click " + commands.get(i));
-                        });
-                    } else {
-                        currentPageItems.add(new GuiItem(item.item()));
-                    }
-                }
-            }
-        });
-    }
-
-    public BaseGui buildGui() {
+    public InventoryGui buildGui() {
         GuiContext guiContext = plugin.getConf().getBoxGuiContext();
-        BaseGui gui = Gui.gui()
-                         .rows(guiContext.items().size() / 9)
-                         .disableAllInteractions()
-                         .create()
-                         .updateTitle(BaseComponent.toLegacyText(plugin.getMessages().get(guiContext.title())));
+        InventoryGui gui = new InventoryGui(
+                plugin,
+                BaseComponent.toLegacyText(plugin.getMessages().get(guiContext.title())),
+                guiContext.mask());
+
+        for (ItemContext itemContext : guiContext.items()) {
+            String role = itemContext.role();
+            if (role == null) {
+                gui.addElement(itemContext.key(), itemContext.item());
+            } else if (role.equals("next-page")) {
+                gui.addElement(new GuiPageElement(itemContext.key(), itemContext.item(), GuiPageElement.PageAction.NEXT));
+            } else if (role.equals("previous-page")) {
+                gui.addElement(new GuiPageElement(itemContext.key(), itemContext.item(), GuiPageElement.PageAction.PREVIOUS));
+            } else if (role.equals("mail")) {
+                GuiElementGroup group = new GuiElementGroup(itemContext.key());
+                plugin.getCommandMailTable().getCommands(player).thenAccept((commands) -> {
+                    for (String command : commands) {
+                        ItemStack mailItem = itemContext.item();
+                        group.addElement(new StaticGuiElement(itemContext.key(), mailItem, (action) -> {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("${player}", player.getName()));
+                            return true;
+                        }));
+                    }
+                    gui.addElement(group);
+                });
+            }
+        }
 
 
         return gui;
     }
 
     public void open() {
-        buildGui().open(player);
+        buildGui().show(player);
     }
 }

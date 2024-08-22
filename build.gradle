@@ -26,7 +26,7 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT"
 
     compileOnly "dev.dejvokep:boosted-yaml:1.3.5"
-    implementation "dev.triumphteam:triumph-gui:3.1.10"
+    implementation "de.themoep:inventorygui:1.6.3-SNAPSHOT"
     implementation "de.themoep:minedown:1.7.1-SNAPSHOT"
     implementation "com.zaxxer:HikariCP:5.1.0"
 }
@@ -45,7 +45,7 @@ shadowJar {
     setArchiveClassifier(null)
 
     relocate "de.themoep.minedown", "com.github.kaspiandev.pobox.minedown"
-    relocate "dev.triumphteam.gui", "com.github.kaspiandev.pobox.triumphgui"
+    relocate "de.themoep.inventorygui", "com.github.kaspiandev.pobox.inventorygui"
 }
 
 tasks.withType(JavaCompile).configureEach {

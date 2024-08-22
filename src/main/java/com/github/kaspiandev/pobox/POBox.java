@@ -10,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class POBox extends JavaPlugin {
 
     private Database database;
-    private BoxTable boxTable;
     private CommandMailTable commandMailTable;
     private Config config;
     private Messages messages;
