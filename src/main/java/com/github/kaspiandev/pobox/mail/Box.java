@@ -8,18 +8,18 @@ import java.util.List;
 public class Box {
 
     private final Player player;
-    private final List<Mail> mailList;
+    private final List<UniqueMail> mailList;
 
     public Box(Player player) {
         this.player = player;
         this.mailList = new ArrayList<>();
     }
 
-    public void addMail(Mail mail) {
+    public void addMail(UniqueMail mail) {
         mailList.add(mail);
     }
 
-    public List<Mail> getMailList() {
+    public List<UniqueMail> getMailList() {
         return mailList;
     }
 
