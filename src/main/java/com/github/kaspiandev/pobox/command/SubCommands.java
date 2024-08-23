@@ -2,7 +2,7 @@ package com.github.kaspiandev.pobox.command;
 
 public enum SubCommands {
 
-    ADD("add", "pobox.command.add");
+    SEND("send", "pobox.command.send");
 
     private final String key;
     private final String permission;

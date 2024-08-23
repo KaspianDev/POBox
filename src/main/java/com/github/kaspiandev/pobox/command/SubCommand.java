@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class SubCommand {
 
-    private final POBox plugin;
+    protected final POBox plugin;
     private final SubCommands type;
     private final String permission;
 

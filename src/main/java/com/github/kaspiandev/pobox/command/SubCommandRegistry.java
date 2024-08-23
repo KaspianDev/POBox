@@ -1,6 +1,7 @@
 package com.github.kaspiandev.pobox.command;
 
 import com.github.kaspiandev.pobox.POBox;
+import com.github.kaspiandev.pobox.command.subcommand.SendSubCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,8 @@ public class SubCommandRegistry {
     }
 
     private void load() {
+        SendSubCommand sendSubCommand = new SendSubCommand(plugin);
+        registry.put(sendSubCommand.getType().getKey(), sendSubCommand);
     }
 
     public Map<String, SubCommand> getRegistry() {
