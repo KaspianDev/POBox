@@ -18,7 +18,7 @@ public class MailManager {
     }
 
     public void loadPlayerBoxes(Player player) {
-        plugin.getMailTable().loadMail(player).thenAccept((mail) -> playerBoxes.put(player.getUniqueId(), mail))
+        plugin.getBoxTable().loadBox(player).thenAccept((box) -> playerBoxes.put(player.getUniqueId(), box));
     }
 
     public void unloadPlayerBoxes(Player player) {
