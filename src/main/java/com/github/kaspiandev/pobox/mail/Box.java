@@ -22,5 +22,9 @@ public class Box {
     public List<Mail> getMailList() {
         return mailList;
     }
-    
+
+    public Player getPlayer() {
+        return player;
+    }
+
 }
