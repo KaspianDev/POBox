@@ -27,6 +27,7 @@ public class MailTable extends Table {
                 uuid CHAR(36),
                 player_uuid CHAR(36),
                 mail BLOB,
+                PRIMARY KEY(uuid),
                 FOREIGN KEY(player_uuid) REFERENCES player_box(player_uuid)
             )
             """;
@@ -44,7 +45,7 @@ public class MailTable extends Table {
             """;
     private static final String DELETE_MAIL = """
             DELETE FROM mail
-            WHERE mail = ?
+            WHERE uuid = ?
             """;
 
     public MailTable(POBox plugin) {
@@ -101,7 +102,9 @@ public class MailTable extends Table {
     }
 
     public CompletableFuture<Void> addMail(Player player, UniqueMail mail) {
-        return CompletableFuture.runAsync(() -> {
+        return findMail(mail.uuid()).thenAcceptAsync((optMail) -> {
+            if (optMail.isPresent()) return;
+
             try (Connection connection = plugin.getDatabase().getSQLConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement(ADD_MAIL)) {
                     statement.setString(1, player.getUniqueId().toString());
@@ -120,14 +123,14 @@ public class MailTable extends Table {
         });
     }
 
-    public CompletableFuture<Void> deleteMail(Player player, Mail mail) {
+    public CompletableFuture<Void> deleteMail(UniqueMail mail) {
         return CompletableFuture.runAsync(() -> {
             try (Connection connection = plugin.getDatabase().getSQLConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement(DELETE_MAIL)) {
                     try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                          MailObjectOutputStream dataOutput = new MailObjectOutputStream(outputStream)) {
                         dataOutput.writeObject(mail);
-                        statement.setBytes(1, outputStream.toByteArray());
+                        statement.setString(1, mail.uuid().toString());
                         statement.executeUpdate();
                     } catch (IOException ignored) {}
                 }
