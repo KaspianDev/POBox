@@ -19,6 +19,10 @@ public class Box {
         mailList.add(mail);
     }
 
+    public void removeMail(UniqueMail mail) {
+        mailList.remove(mail);
+    }
+
     public List<UniqueMail> getMailList() {
         return mailList;
     }

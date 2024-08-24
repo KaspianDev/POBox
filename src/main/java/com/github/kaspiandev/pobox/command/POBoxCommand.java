@@ -2,9 +2,11 @@ package com.github.kaspiandev.pobox.command;
 
 import com.github.kaspiandev.pobox.POBox;
 import com.github.kaspiandev.pobox.config.Message;
+import com.github.kaspiandev.pobox.gui.BoxGui;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +25,13 @@ public class POBoxCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command,
                              String label, String[] args) {
         if (args.length < 1) {
-            sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
-            return false;
+            if (sender instanceof Player player) {
+                new BoxGui(player, plugin).open();
+                return true;
+            } else {
+                sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
+                return false;
+            }
         } else {
             SubCommand cmd = registry.findById(args[0]);
             if (cmd == null) {

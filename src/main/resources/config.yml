@@ -1,6 +1,6 @@
 gui:
   box:
-    title: "&6&lPOBox &8&o(${currentPage}/${pages})"
+    title: "&6&lPOBox"
     mask:
       - "xxxxxxxxx"
       - "xmmmmmmmx"

@@ -42,7 +42,12 @@ public class MailManager implements Listener {
 
     public void addMail(Box box, Mail mail) {
         box.addMail(new UniqueMail(mail));
-        sync(box);
+    }
+
+    public void removeMail(Box box, UniqueMail mail) {
+        System.out.println(box.getMailList());
+        box.removeMail(mail);
+        System.out.println(box.getMailList());
     }
 
     public Optional<Box> getBox(Player player) {
