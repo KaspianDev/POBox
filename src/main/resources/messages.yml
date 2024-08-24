@@ -4,6 +4,8 @@ command:
   invalid-subcommand: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&Specified subcommand doesn't exist."
   only-players: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&Only players can use this command."
 mail:
-  sent: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&Mail was sent successfully."
+  sent: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#33e153&Mail was sent successfully."
+  no-player: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&Player was not found."
+  no-item: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&You need to hold an item to send it as mail."
 
 version: 2

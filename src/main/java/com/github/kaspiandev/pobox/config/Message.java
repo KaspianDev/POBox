@@ -7,7 +7,9 @@ public enum Message {
     COMMAND_INVALID_SUBCOMMAND("command.invalid-subcommand"),
     COMMAND_ONLY_PLAYERS("command.only-players"),
 
-    MAIL_SENT("mail.sent");
+    MAIL_SENT("mail.sent"),
+    MAIL_NO_PLAYER("mail.no-player"),
+    MAIL_NO_ITEM("mail.no-item");
 
     private final String path;
 

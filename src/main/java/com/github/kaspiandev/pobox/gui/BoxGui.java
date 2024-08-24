@@ -4,11 +4,8 @@ import com.github.kaspiandev.pobox.POBox;
 import de.themoep.inventorygui.GuiElementGroup;
 import de.themoep.inventorygui.GuiPageElement;
 import de.themoep.inventorygui.InventoryGui;
-import de.themoep.inventorygui.StaticGuiElement;
 import net.md_5.bungee.api.chat.BaseComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class BoxGui {
 
@@ -37,16 +34,16 @@ public class BoxGui {
                 gui.addElement(new GuiPageElement(itemContext.key(), itemContext.item(), GuiPageElement.PageAction.PREVIOUS));
             } else if (role.equals("mail")) {
                 GuiElementGroup group = new GuiElementGroup(itemContext.key());
-                plugin.getCommandMailTable().getCommands(player).thenAccept((commands) -> {
-                    for (String command : commands) {
-                        ItemStack mailItem = itemContext.item();
-                        group.addElement(new StaticGuiElement(itemContext.key(), mailItem, (action) -> {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("${player}", player.getName()));
-                            return true;
-                        }));
-                    }
-                    gui.addElement(group);
-                });
+//                plugin.getMailManager().getBox(player).thenAccept((commands) -> {
+//                    for (String command : commands) {
+//                        ItemStack mailItem = itemContext.item();
+//                        group.addElement(new StaticGuiElement(itemContext.key(), mailItem, (action) -> {
+//                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("${player}", player.getName()));
+//                            return true;
+//                        }));
+//                    }
+//                    gui.addElement(group);
+//                });
             }
         }
 

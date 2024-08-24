@@ -33,7 +33,10 @@ public final class POBox extends JavaPlugin {
 
         database = new Database(this);
         boxTable = new BoxTable(this);
+        database.registerTable(boxTable);
         mailTable = new MailTable(this);
+        database.registerTable(mailTable);
+        database.load();
         mailManager = new MailManager(this);
 
         PluginCommand pluginCommand = getCommand("pobox");

@@ -32,6 +32,7 @@ public class MailManager implements Listener {
 
     public void addMail(Box box, Mail mail) {
         box.addMail(new UniqueMail(mail));
+        sync(box);
     }
 
     public Optional<Box> getBox(Player player) {

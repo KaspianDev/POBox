@@ -22,7 +22,7 @@ public class SendSubCommand extends SubCommand {
 
     @Override
     protected void execute(CommandSender sender, String[] args) {
-        if (args.length < 3) {
+        if (args.length < 2) {
             sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
             return;
         }
@@ -30,22 +30,39 @@ public class SendSubCommand extends SubCommand {
         // Todo: require name
         // Add null checks
         Player target = Bukkit.getPlayer(args[1]);
-        if (target == null) return;
+        if (target == null) {
+            sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_NO_PLAYER));
+            return;
+        }
 
-        String mailType = args[2];
+        if (args.length < 3) {
+            sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
+            return;
+        }
+
+        String mailName = args[2];
+        System.out.println(mailName);
+
+        if (args.length < 4) {
+            sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
+            return;
+        }
+
+        String mailType = args[3];
         if (mailType.equals("command")) {
-            if (args.length < 4) {
+            if (args.length < 5) {
                 sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
                 return;
             }
 
             StringJoiner command = new StringJoiner(" ");
-            for (int i = 3; i < args.length; i++) {
+            for (int i = 4; i < args.length; i++) {
                 command.add(args[i]);
             }
+            System.out.println(command);
 
             plugin.getMailManager().getBox(target).ifPresent((box) -> {
-                plugin.getMailManager().addMail(box, new CommandMail("command", command.toString()));
+                plugin.getMailManager().addMail(box, new CommandMail(mailName, command.toString()));
                 sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_SENT));
             });
         } else if (mailType.equals("item")) {
@@ -55,10 +72,13 @@ public class SendSubCommand extends SubCommand {
             }
 
             ItemStack item = player.getInventory().getItemInMainHand();
-            if (item.getType().isAir()) return; // Item validation
+            if (item.getType().isAir()) {
+                player.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_NO_ITEM));
+                return;
+            }
 
             plugin.getMailManager().getBox(target).ifPresent((box) -> {
-                plugin.getMailManager().addMail(box, new ItemMail("item", item));
+                plugin.getMailManager().addMail(box, new ItemMail(mailName, item));
                 player.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_SENT));
             });
         }
