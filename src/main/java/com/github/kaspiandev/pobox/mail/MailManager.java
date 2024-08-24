@@ -1,6 +1,7 @@
 package com.github.kaspiandev.pobox.mail;
 
 import com.github.kaspiandev.pobox.POBox;
+import com.github.kaspiandev.pobox.event.MailSendEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,8 +46,12 @@ public class MailManager implements Listener {
         playerBoxes.remove(player.getUniqueId());
     }
 
-    public void addMail(Box box, Mail mail) {
-        box.addMail(new UniqueMail(mail));
+    public void sendMail(Box box, Mail mail) {
+        UniqueMail uniqueMail = new UniqueMail(mail);
+        MailSendEvent mailSendEvent = new MailSendEvent(box.getPlayer(), uniqueMail);
+        Bukkit.getPluginManager().callEvent(mailSendEvent);
+        if (mailSendEvent.isCancelled()) return;
+        box.addMail(uniqueMail);
     }
 
     public void removeMail(Box box, UniqueMail mail) {

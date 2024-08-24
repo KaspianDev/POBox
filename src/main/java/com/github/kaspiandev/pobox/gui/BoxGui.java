@@ -1,12 +1,14 @@
 package com.github.kaspiandev.pobox.gui;
 
 import com.github.kaspiandev.pobox.POBox;
+import com.github.kaspiandev.pobox.event.MailClaimEvent;
 import com.github.kaspiandev.pobox.mail.Mail;
 import com.github.kaspiandev.pobox.mail.UniqueMail;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import de.themoep.inventorygui.*;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -73,6 +75,9 @@ public class BoxGui {
                             }
 
                             group.addElement(new StaticGuiElement(itemContext.key(), mailItem, (action) -> {
+                                MailClaimEvent mailClaimEvent = new MailClaimEvent(player, uniqueMail);
+                                Bukkit.getPluginManager().callEvent(mailClaimEvent);
+                                if (mailClaimEvent.isCancelled()) return true;
                                 mail.claim(player);
                                 plugin.getMailManager().removeMail(box, uniqueMail);
                                 gui.draw(player, true, false);

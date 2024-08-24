@@ -57,7 +57,7 @@ public class SendSubCommand extends SubCommand {
             }
 
             plugin.getMailManager().getBox(target).ifPresent((box) -> {
-                plugin.getMailManager().addMail(box, new CommandMail(mailName, command.toString()));
+                plugin.getMailManager().sendMail(box, new CommandMail(mailName, command.toString()));
                 sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_SENT));
             });
         } else if (mailType.equals("item")) {
@@ -73,7 +73,7 @@ public class SendSubCommand extends SubCommand {
             }
 
             plugin.getMailManager().getBox(target).ifPresent((box) -> {
-                plugin.getMailManager().addMail(box, new ItemMail(mailName, item));
+                plugin.getMailManager().sendMail(box, new ItemMail(mailName, item));
                 player.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_SENT));
             });
         }
