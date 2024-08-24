@@ -3,13 +3,27 @@ package com.github.kaspiandev.pobox.gui;
 import com.github.kaspiandev.pobox.POBox;
 import com.github.kaspiandev.pobox.mail.Mail;
 import com.github.kaspiandev.pobox.mail.UniqueMail;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import de.themoep.inventorygui.*;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 public class BoxGui {
+
+    private static final Cache<UUID, BoxGui> GUI_CACHE;
+
+    static {
+        GUI_CACHE = CacheBuilder.newBuilder()
+                                .expireAfterWrite(30, TimeUnit.SECONDS)
+                                .build();
+    }
 
     private final Player player;
     private final POBox plugin;
@@ -21,6 +35,17 @@ public class BoxGui {
         this.plugin = plugin;
         this.guiContext = plugin.getConf().getBoxGuiContext();
         this.gui = buildGui();
+    }
+
+    public static void open(Player player, POBox plugin) {
+        try {
+            GUI_CACHE.get(player.getUniqueId(), () -> {
+                System.out.println("no cache");
+                return new BoxGui(player, plugin);
+            }).open();
+        } catch (ExecutionException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public InventoryGui buildGui() {
@@ -63,15 +88,14 @@ public class BoxGui {
             }
         }
 
-        String title = guiContext.title()
-                                 .replace("${currentPage}", String.valueOf(gui.getPageNumber(player)))
-                                 .replace("${pages}", String.valueOf(gui.getPageAmount(player)));
+        String title = guiContext.title();
         gui.setTitle(BaseComponent.toLegacyText(plugin.getMessages().get(title)));
 
         return gui;
     }
 
-    public void open() {
+    private void open() {
         gui.show(player);
     }
+
 }

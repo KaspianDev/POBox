@@ -10,16 +10,23 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class MailManager implements Listener {
 
     private final POBox plugin;
     private final Map<UUID, Box> playerBoxes;
+    private final SyncTask syncTask;
 
     public MailManager(POBox plugin) {
         this.plugin = plugin;
-        this.playerBoxes = new HashMap<>();
+        this.playerBoxes = new ConcurrentHashMap<>();
+        this.syncTask = new SyncTask();
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> syncTask.run(false), 1200, 1200);
         Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -30,7 +37,6 @@ public class MailManager implements Listener {
             return box;
         });
     }
-
 
     public void loadPlayerBoxes(Player player) {
         loadBox(player).thenAccept((box) -> playerBoxes.put(player.getUniqueId(), box));
@@ -45,9 +51,7 @@ public class MailManager implements Listener {
     }
 
     public void removeMail(Box box, UniqueMail mail) {
-        System.out.println(box.getMailList());
         box.removeMail(mail);
-        System.out.println(box.getMailList());
     }
 
     public Optional<Box> getBox(Player player) {
@@ -76,6 +80,10 @@ public class MailManager implements Listener {
         });
     }
 
+    public SyncTask getSyncTask() {
+        return syncTask;
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         loadPlayerBoxes(event.getPlayer());
@@ -87,6 +95,22 @@ public class MailManager implements Listener {
         getBox(player).ifPresent((box) -> {
             sync(box).thenRun(() -> unloadPlayerBoxes(player));
         });
+    }
+
+    public class SyncTask {
+
+        private final ExecutorService executorService;
+
+        public SyncTask() {
+            this.executorService = Executors.newFixedThreadPool(2);
+        }
+
+        public void run(boolean sync) {
+            for (Box box : playerBoxes.values()) {
+                executorService.submit(() -> (sync) ? sync(box).join() : sync(box));
+            }
+        }
+
     }
 
 }

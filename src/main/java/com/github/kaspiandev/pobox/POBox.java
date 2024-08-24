@@ -46,7 +46,7 @@ public final class POBox extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        mailManager.getSyncTask().run(true);
     }
 
     public Config getConf() {

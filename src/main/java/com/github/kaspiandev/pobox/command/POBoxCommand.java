@@ -26,7 +26,7 @@ public class POBoxCommand implements TabExecutor {
                              String label, String[] args) {
         if (args.length < 1) {
             if (sender instanceof Player player) {
-                new BoxGui(player, plugin).open();
+                BoxGui.open(player, plugin);
                 return true;
             } else {
                 sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
