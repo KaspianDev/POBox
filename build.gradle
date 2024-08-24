@@ -1,6 +1,7 @@
 plugins {
     id "java"
     id "com.gradleup.shadow" version "8.3.0"
+    id "maven-publish"
 }
 
 group = "com.github.kaspiandev"
@@ -53,6 +54,14 @@ tasks.withType(JavaCompile).configureEach {
 
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         options.release.set(targetJavaVersion)
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) { publication ->
+            project.shadow.component(publication)
+        }
     }
 }
 
