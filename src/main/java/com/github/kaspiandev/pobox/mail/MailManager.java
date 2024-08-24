@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ public class MailManager implements Listener {
 
     public MailManager(POBox plugin) {
         this.plugin = plugin;
-        this.playerBoxes = new ConcurrentHashMap<>();
+        this.playerBoxes = new HashMap<>();
         this.syncTask = new SyncTask();
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> syncTask.run(false), 1200, 1200);

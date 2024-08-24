@@ -39,10 +39,7 @@ public class BoxGui {
 
     public static void open(Player player, POBox plugin) {
         try {
-            GUI_CACHE.get(player.getUniqueId(), () -> {
-                System.out.println("no cache");
-                return new BoxGui(player, plugin);
-            }).open();
+            GUI_CACHE.get(player.getUniqueId(), () -> new BoxGui(player, plugin)).open();
         } catch (ExecutionException ex) {
             throw new RuntimeException(ex);
         }
