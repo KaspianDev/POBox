@@ -27,8 +27,6 @@ public class SendSubCommand extends SubCommand {
             return;
         }
 
-        // Todo: require name
-        // Add null checks
         Player target = Bukkit.getPlayer(args[1]);
         if (target == null) {
             sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_NO_PLAYER));
@@ -36,22 +34,20 @@ public class SendSubCommand extends SubCommand {
         }
 
         if (args.length < 3) {
-            sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
+            sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_NO_NAME));
             return;
         }
 
         String mailName = args[2];
-        System.out.println(mailName);
-
         if (args.length < 4) {
-            sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
+            sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_NO_TYPE));
             return;
         }
 
         String mailType = args[3];
         if (mailType.equals("command")) {
             if (args.length < 5) {
-                sender.spigot().sendMessage(plugin.getMessages().get(Message.COMMAND_NO_ARGUMENTS));
+                sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_NO_COMMAND));
                 return;
             }
 
@@ -59,7 +55,6 @@ public class SendSubCommand extends SubCommand {
             for (int i = 4; i < args.length; i++) {
                 command.add(args[i]);
             }
-            System.out.println(command);
 
             plugin.getMailManager().getBox(target).ifPresent((box) -> {
                 plugin.getMailManager().addMail(box, new CommandMail(mailName, command.toString()));
@@ -86,6 +81,15 @@ public class SendSubCommand extends SubCommand {
 
     @Override
     public List<String> suggestions(CommandSender sender, String[] args) {
+        if (args.length == 3) {
+            return List.of("<name>");
+        } else if (args.length == 4) {
+            return List.of("command", "item");
+        } else if (args.length >= 5) {
+            if (args[3].equals("command")) {
+                return List.of("<command>");
+            }
+        }
         return List.of();
     }
 }

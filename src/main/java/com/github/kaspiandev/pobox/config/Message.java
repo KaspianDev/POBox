@@ -9,7 +9,10 @@ public enum Message {
 
     MAIL_SENT("mail.sent"),
     MAIL_NO_PLAYER("mail.no-player"),
-    MAIL_NO_ITEM("mail.no-item");
+    MAIL_NO_ITEM("mail.no-item"),
+    MAIL_NO_NAME("mail.no-name"),
+    MAIL_NO_TYPE("mail.no-type"),
+    MAIL_NO_COMMAND("mail.no-command");
 
     private final String path;
 

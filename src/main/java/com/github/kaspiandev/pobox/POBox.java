@@ -4,7 +4,6 @@ import com.github.kaspiandev.pobox.command.POBoxCommand;
 import com.github.kaspiandev.pobox.command.SubCommandRegistry;
 import com.github.kaspiandev.pobox.config.Config;
 import com.github.kaspiandev.pobox.config.Messages;
-import com.github.kaspiandev.pobox.data.BoxTable;
 import com.github.kaspiandev.pobox.data.Database;
 import com.github.kaspiandev.pobox.data.MailTable;
 import com.github.kaspiandev.pobox.exception.PluginLoadFailureException;
@@ -15,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class POBox extends JavaPlugin {
 
     private Database database;
-    private BoxTable boxTable;
     private MailTable mailTable;
     private MailManager mailManager;
     private Config config;
@@ -32,8 +30,6 @@ public final class POBox extends JavaPlugin {
         }
 
         database = new Database(this);
-        boxTable = new BoxTable(this);
-        database.registerTable(boxTable);
         mailTable = new MailTable(this);
         database.registerTable(mailTable);
         database.load();
@@ -61,16 +57,8 @@ public final class POBox extends JavaPlugin {
         return messages;
     }
 
-    public BoxTable getCommandMailTable() {
-        return boxTable;
-    }
-
     public MailManager getMailManager() {
         return mailManager;
-    }
-
-    public BoxTable getBoxTable() {
-        return boxTable;
     }
 
     public MailTable getMailTable() {

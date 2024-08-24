@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class MailManager implements Listener {
@@ -22,8 +23,17 @@ public class MailManager implements Listener {
         Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    public CompletableFuture<Box> loadBox(Player player) {
+        return plugin.getMailTable().loadMail(player).thenApply((mail) -> {
+            Box box = new Box(player);
+            mail.forEach(box::addMail);
+            return box;
+        });
+    }
+
+
     public void loadPlayerBoxes(Player player) {
-        plugin.getBoxTable().loadBox(player).thenAccept((box) -> playerBoxes.put(player.getUniqueId(), box));
+        loadBox(player).thenAccept((box) -> playerBoxes.put(player.getUniqueId(), box));
     }
 
     public void unloadPlayerBoxes(Player player) {
@@ -39,14 +49,14 @@ public class MailManager implements Listener {
         return Optional.ofNullable(playerBoxes.get(player.getUniqueId()));
     }
 
-    public void sync(Box box) {
+    public CompletableFuture<Void> sync(Box box) {
         List<UniqueMail> boxMail = box.getMailList();
 
         Set<UUID> boxMailUUIDs = boxMail.stream()
                                         .map(UniqueMail::uuid)
                                         .collect(Collectors.toSet());
 
-        plugin.getMailTable().loadMail(box.getPlayer()).thenAccept((dbMail) -> {
+        return plugin.getMailTable().loadMail(box.getPlayer()).thenAccept((dbMail) -> {
             Set<UUID> dbMailUUIDs = dbMail.stream()
                                           .map(UniqueMail::uuid)
                                           .collect(Collectors.toSet());
@@ -68,7 +78,10 @@ public class MailManager implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        unloadPlayerBoxes(event.getPlayer());
+        Player player = event.getPlayer();
+        getBox(player).ifPresent((box) -> {
+            sync(box).thenRun(() -> unloadPlayerBoxes(player));
+        });
     }
 
 }

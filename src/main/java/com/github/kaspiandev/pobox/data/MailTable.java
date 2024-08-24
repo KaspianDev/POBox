@@ -27,8 +27,7 @@ public class MailTable extends Table {
                 uuid CHAR(36),
                 player_uuid CHAR(36),
                 mail BLOB,
-                PRIMARY KEY(uuid),
-                FOREIGN KEY(player_uuid) REFERENCES player_box(player_uuid)
+                PRIMARY KEY(uuid)
             )
             """;
     private static final String GET_PLAYER_MAIL = """
