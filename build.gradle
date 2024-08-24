@@ -42,6 +42,8 @@ java {
     }
 }
 
+jar.enabled = false
+
 shadowJar {
     setArchiveClassifier(null)
 
