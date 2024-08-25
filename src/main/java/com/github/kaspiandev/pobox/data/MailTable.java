@@ -126,12 +126,8 @@ public class MailTable extends Table {
         return CompletableFuture.runAsync(() -> {
             try (Connection connection = plugin.getDatabase().getSQLConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement(DELETE_MAIL)) {
-                    try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                         MailObjectOutputStream dataOutput = new MailObjectOutputStream(outputStream)) {
-                        dataOutput.writeObject(mail);
-                        statement.setString(1, mail.uuid().toString());
-                        statement.executeUpdate();
-                    } catch (IOException ignored) {}
+                    statement.setString(1, mail.uuid().toString());
+                    statement.executeUpdate();
                 }
             } catch (SQLException ex) {
                 throw new RuntimeException("An SQL exception occurred.", ex);
