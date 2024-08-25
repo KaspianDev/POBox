@@ -66,7 +66,7 @@ public class BoxGui {
                     GuiElementGroup group = new GuiElementGroup(itemContext.key());
                     plugin.getMailManager().getBox(player).ifPresent((box) -> {
                         for (UniqueMail uniqueMail : box.getMailList()) {
-                            ItemStack mailItem = itemContext.item();
+                            ItemStack mailItem = itemContext.item().clone();
                             ItemMeta mailItemMeta = mailItem.getItemMeta();
                             Mail mail = uniqueMail.mail();
                             if (mailItemMeta != null) {
