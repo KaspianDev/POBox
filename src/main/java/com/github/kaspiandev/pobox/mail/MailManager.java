@@ -30,7 +30,7 @@ public class MailManager implements Listener {
         Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    public CompletableFuture<Box> loadBox(Player player) {
+    private CompletableFuture<Box> loadBox(Player player) {
         return plugin.getMailTable().loadMail(player).thenApply((mail) -> {
             Box box = new Box(player);
             mail.forEach(box::addMail);
@@ -38,11 +38,11 @@ public class MailManager implements Listener {
         });
     }
 
-    public void loadPlayerBoxes(Player player) {
+    private void loadPlayerBoxes(Player player) {
         loadBox(player).thenAccept((box) -> playerBoxes.put(player.getUniqueId(), box));
     }
 
-    public void unloadPlayerBoxes(Player player) {
+    private void unloadPlayerBoxes(Player player) {
         playerBoxes.remove(player.getUniqueId());
     }
 

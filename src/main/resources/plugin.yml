@@ -5,5 +5,8 @@ api-version: '1.19'
 author: KaspianDev
 libraries:
   - dev.dejvokep:boosted-yaml:1.3.5
+permissions:
+  pobox.open:
+    default: true
 commands:
   pobox: { }

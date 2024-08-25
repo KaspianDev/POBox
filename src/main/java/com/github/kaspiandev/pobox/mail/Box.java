@@ -3,6 +3,7 @@ package com.github.kaspiandev.pobox.mail;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Box {
@@ -15,16 +16,16 @@ public class Box {
         this.mailList = new ArrayList<>();
     }
 
-    public void addMail(UniqueMail mail) {
+    void addMail(UniqueMail mail) {
         mailList.add(mail);
     }
 
-    public void removeMail(UniqueMail mail) {
+    void removeMail(UniqueMail mail) {
         mailList.remove(mail);
     }
 
     public List<UniqueMail> getMailList() {
-        return mailList;
+        return Collections.unmodifiableList(mailList);
     }
 
     public Player getPlayer() {
