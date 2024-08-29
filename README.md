@@ -73,6 +73,14 @@ The API currently only contains 2 events:
 You can implement your own Mail by extending Mail abstract class. Check
 CommandMail and ItemMail for examples. Mail must support java serialization.
 
+Mail can have an optional icon that will override the icon from config file.  
+Example command with and without icon:
+
+```java
+CommandMail withIcon = new CommandMail("name", "command", Material.STICK);
+CommandMail withoutIcon = new CommandMail("name", "command");
+```
+
 To send mail you can access MailManager like so:
 
 ```

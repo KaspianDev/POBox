@@ -11,7 +11,7 @@ gui:
         type: BLUE_STAINED_GLASS_PANE
       m:
         role: "mail"
-        type: CHEST
+        type: CHEST # Can be overwritten by mail
         name: "&6&l${mailName}"
         lore:
           - "&7Left-click to claim!"

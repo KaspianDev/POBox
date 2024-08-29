@@ -9,6 +9,7 @@ import com.google.common.cache.CacheBuilder;
 import de.themoep.inventorygui.*;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -70,8 +71,14 @@ public class BoxGui {
                             ItemMeta mailItemMeta = mailItem.getItemMeta();
                             Mail mail = uniqueMail.mail();
                             if (mailItemMeta != null) {
-                                mailItemMeta.setDisplayName(mailItemMeta.getDisplayName().replace("${mailName}", mail.getName()));
+                                mailItemMeta.setDisplayName(mailItemMeta.getDisplayName()
+                                                                        .replace("${mailName}", mail.getName()));
                                 mailItem.setItemMeta(mailItemMeta);
+                            }
+
+                            Material icon = mail.getIcon();
+                            if (icon != null) {
+                                mailItem.setType(icon);
                             }
 
                             group.addElement(new StaticGuiElement(itemContext.key(), mailItem, (action) -> {
