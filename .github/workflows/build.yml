@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'gradle'
+    - name: Build with Gradle
+      run: ./gradlew build
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifact
+        path: ./build/libs/POBox-*.jar
