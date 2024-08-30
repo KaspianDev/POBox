@@ -82,7 +82,7 @@ public class BoxGui {
                                     newLore.add(ColorUtil.string(senderLore.replace("${sender}", mail.getSender())));
                                     assert lore != null;
                                     newLore.addAll(lore);
-                                    mailItemMeta.setLore(lore);
+                                    mailItemMeta.setLore(newLore);
                                 }
                                 mailItemMeta.setDisplayName(mailItemMeta.getDisplayName()
                                                                         .replace("${mailName}", mail.getName()));
