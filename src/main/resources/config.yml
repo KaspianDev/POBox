@@ -13,6 +13,7 @@ gui:
         role: "mail"
         type: CHEST # Can be overwritten by mail
         name: "&6&l${mailName}"
+        sender-lore: "&7Sender: ${sender}"
         lore:
           - "&7Left-click to claim!"
         flags:
@@ -34,4 +35,4 @@ gui:
         lore:
           - "&7Click to open previous page!"
 
-version: 1
+version: 2

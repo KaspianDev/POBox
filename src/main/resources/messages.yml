@@ -10,5 +10,6 @@ mail:
   no-name: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&You need to specify the mail name."
   no-type: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&You need to specify the mail type."
   no-command: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&You need to specify the command for this mail."
+  no-anonymous: "&#EF790A-#FFB40C&FishyBusiness &#935a10&» &#e13347&You need to specify if the mail is anonymous or not."
 
-version: 3
+version: 4

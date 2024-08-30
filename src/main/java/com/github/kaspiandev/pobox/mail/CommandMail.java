@@ -18,6 +18,21 @@ public class CommandMail extends Mail {
         this.command = command;
     }
 
+    public CommandMail(String name, String sender, String command) {
+        super(name, sender);
+        this.command = command;
+    }
+
+    public CommandMail(String name, Material icon, String command) {
+        super(name, icon);
+        this.command = command;
+    }
+
+    public CommandMail(String name, Material icon, String sender, String command) {
+        super(name, icon, sender);
+        this.command = command;
+    }
+
     @Override
     public void claim(Player player) {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("${player}", player.getName()));

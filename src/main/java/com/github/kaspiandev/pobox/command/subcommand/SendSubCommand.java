@@ -45,19 +45,30 @@ public class SendSubCommand extends SubCommand {
         }
 
         String mailType = args[3];
+
+        if (args.length < 5) {
+            sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_NO_COMMAND));
+            return;
+        }
+
+        boolean isAnonymous = args[4].equals("true");
+
         if (mailType.equals("command")) {
-            if (args.length < 5) {
+            if (args.length < 6) {
                 sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_NO_COMMAND));
                 return;
             }
 
             StringJoiner command = new StringJoiner(" ");
-            for (int i = 4; i < args.length; i++) {
+            for (int i = 5; i < args.length; i++) {
                 command.add(args[i]);
             }
 
             plugin.getMailManager().getBox(target).ifPresent((box) -> {
-                plugin.getMailManager().sendMail(box, new CommandMail(mailName, command.toString()));
+                CommandMail mail = (isAnonymous)
+                        ? new CommandMail(mailName, command.toString())
+                        : new CommandMail(mailName, sender.getName(), command.toString());
+                plugin.getMailManager().sendMail(box, mail);
                 sender.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_SENT));
             });
         } else if (mailType.equals("item")) {
@@ -73,7 +84,10 @@ public class SendSubCommand extends SubCommand {
             }
 
             plugin.getMailManager().getBox(target).ifPresent((box) -> {
-                plugin.getMailManager().sendMail(box, new ItemMail(mailName, item));
+                ItemMail mail = (isAnonymous)
+                        ? new ItemMail(mailName, item)
+                        : new ItemMail(mailName, sender.getName(), item);
+                plugin.getMailManager().sendMail(box, mail);
                 player.spigot().sendMessage(plugin.getMessages().get(Message.MAIL_SENT));
             });
         }
@@ -85,8 +99,10 @@ public class SendSubCommand extends SubCommand {
             return List.of("<name>");
         } else if (args.length == 4) {
             return List.of("command", "item");
-        } else if (args.length >= 5) {
-            if (args[3].equals("command")) {
+        } else if (args.length == 5) {
+            return List.of("true", "false");
+        } else if (args.length >= 6) {
+            if (args[4].equals("command")) {
                 return List.of("<command>");
             }
         }

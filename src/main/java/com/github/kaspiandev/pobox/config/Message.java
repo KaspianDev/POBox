@@ -12,7 +12,8 @@ public enum Message {
     MAIL_NO_ITEM("mail.no-item"),
     MAIL_NO_NAME("mail.no-name"),
     MAIL_NO_TYPE("mail.no-type"),
-    MAIL_NO_COMMAND("mail.no-command");
+    MAIL_NO_COMMAND("mail.no-command"),
+    MAIL_NO_ANONYMOUS("mail.no-anonymous");
 
     private final String path;
 

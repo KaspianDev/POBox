@@ -4,6 +4,7 @@ import com.github.kaspiandev.pobox.POBox;
 import com.github.kaspiandev.pobox.event.MailClaimEvent;
 import com.github.kaspiandev.pobox.mail.Mail;
 import com.github.kaspiandev.pobox.mail.UniqueMail;
+import com.github.kaspiandev.pobox.util.ColorUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import de.themoep.inventorygui.*;
@@ -14,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -71,6 +74,16 @@ public class BoxGui {
                             ItemMeta mailItemMeta = mailItem.getItemMeta();
                             Mail mail = uniqueMail.mail();
                             if (mailItemMeta != null) {
+                                String sender = mail.getSender();
+                                String senderLore = itemContext.senderLore();
+                                if (sender != null && senderLore != null && mailItemMeta.hasLore()) {
+                                    List<String> lore = mailItemMeta.getLore();
+                                    List<String> newLore = new ArrayList<>();
+                                    newLore.add(ColorUtil.string(senderLore.replace("${sender}", mail.getSender())));
+                                    assert lore != null;
+                                    newLore.addAll(lore);
+                                    mailItemMeta.setLore(lore);
+                                }
                                 mailItemMeta.setDisplayName(mailItemMeta.getDisplayName()
                                                                         .replace("${mailName}", mail.getName()));
                                 mailItem.setItemMeta(mailItemMeta);

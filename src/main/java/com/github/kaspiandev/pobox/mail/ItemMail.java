@@ -21,6 +21,21 @@ public class ItemMail extends Mail {
         this.item = item;
     }
 
+    public ItemMail(String name, Material icon, String sender, ItemStack item) {
+        super(name, icon, sender);
+        this.item = item;
+    }
+
+    public ItemMail(String name, Material icon, ItemStack item) {
+        super(name, icon);
+        this.item = item;
+    }
+
+    public ItemMail(String name, String sender, ItemStack item) {
+        super(name, sender);
+        this.item = item;
+    }
+
     @Override
     public void claim(Player player) {
         PlayerInventory inventory = player.getInventory();
