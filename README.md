@@ -1,5 +1,7 @@
 # POBox
 
+![](assets/pobox.png)
+
 POBox is a minecraft plugin that allows you to stash items and other things in
 virtual storage so that player can collect them later. Offline players aren't
 supported yet.
