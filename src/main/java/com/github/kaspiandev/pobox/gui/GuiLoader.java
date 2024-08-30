@@ -23,7 +23,7 @@ public class GuiLoader {
             ItemStack item = ItemLoader.load(itemSection);
             String role = itemSection.getString("role");
             String senderLore = itemSection.getString("sender-lore");
-            items.add(new ItemContext(itemKey.charAt(0), item, role, (senderLore.isEmpty()) ? null : senderLore));
+            items.add(new ItemContext(itemKey.charAt(0), item, role, (senderLore == null || senderLore.isEmpty()) ? null : senderLore));
         }
 
         return new GuiContext(mask, title, items);
