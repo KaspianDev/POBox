@@ -12,7 +12,7 @@ public abstract class Mail implements Serializable {
 
     public Mail(String name, Material icon) {
         this.name = name;
-        this.icon = icon;
+        this.icon = (icon.isAir()) ? null : icon;
     }
 
     public Mail(String name) {
